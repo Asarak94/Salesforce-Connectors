@@ -1,0 +1,28 @@
+openapi: 3.0.1
+info:
+  title: Salesforcebulk-API
+  description: API Definition of Salesforcebulk-API
+  version: 1.0.0
+servers:
+- url: http://localhost:8290/salesforce
+paths:
+  /insertRecords:
+    get:
+      responses:
+        default:
+          description: Default response
+  /getStatusOfBatch:
+    post:
+      requestBody:
+        description: Sample Payload
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payload:
+                  type: object
+        required: false
+      responses:
+        default:
+          description: Default response

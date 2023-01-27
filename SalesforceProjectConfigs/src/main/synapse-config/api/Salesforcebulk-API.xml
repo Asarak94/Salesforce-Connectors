@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/salesforce" name="Salesforcebulk-API" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="GET" url-mapping="/insertRecords">
+        <inSequence>
+            <property expression="//operation/text()" name="operation" scope="default" type="STRING"/>
+            <property expression="//object/text()" name="object" scope="default" type="STRING"/>
+            <property expression="//contentType/text()" name="contentType" scope="default" type="STRING"/>
+            <property expression="//objects" name="objects" scope="default" type="STRING"/>
+            <property expression="//isQuery/text()" name="isQuery" scope="default" type="STRING"/>
+            <log level="custom">
+                <property name="operation" value="operation"/>
+            </log>
+            <salesforcebulk.init>
+                <apiUrl>url</apiUrl>
+                <tokenEndpointHostname>https://host.salesforce.com</tokenEndpointHostname>
+                <accessToken>accessToken</accessToken>
+                <apiVersion>56.0</apiVersion>
+                <refreshToken>refreshToken</refreshToken>
+                <clientSecret>clientSecret</clientSecret>
+                <clientId>clientId</clientId>
+            </salesforcebulk.init>
+            <salesforcebulk.createJob>
+                <operation>{$ctx:operation}</operation>
+                <object>{$ctx:object}</object>
+                <contentType>XML</contentType>
+            </salesforcebulk.createJob>
+            <log level="full"/>
+            <salesforcebulk.init>
+                <apiUrl>url</apiUrl>
+                <tokenEndpointHostname>https://host.salesforce.com</tokenEndpointHostname>
+                <accessToken>accessToken</accessToken>
+                <apiVersion>56.0</apiVersion>
+                <refreshToken>refreshToken</refreshToken>
+                <clientSecret>clientSecret</clientSecret>
+                <clientId>clientId</clientId>
+            </salesforcebulk.init>
+            <salesforcebulk.addBatch>
+                <objects>{$ctx:objects}</objects>
+                <jobId>{$ctx:jobId}</jobId>
+                <isQuery>{$ctx:isQuery}</isQuery>
+                <contentType>{$ctx:contentType}</contentType>
+            </salesforcebulk.addBatch>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+    <resource methods="POST" url-mapping="/getStatusOfBatch">
+        <inSequence>
+            <property expression="//jobId/text()" name="jobId" scope="default" type="STRING"/>
+            <property expression="//batchId/text()" name="batchId" scope="default" type="STRING"/>
+            <salesforcebulk.init>
+                <apiUrl>url</apiUrl>
+                <tokenEndpointHostname>https://host.salesforce.com</tokenEndpointHostname>
+                <accessToken>accessToken</accessToken>
+                <apiVersion>56.0</apiVersion>
+                <refreshToken>refreshToken</refreshToken>
+                <clientSecret>clientSecret</clientSecret>
+                <clientId>clientId</clientId>
+            </salesforcebulk.init>
+            <salesforcebulk.getBatchStatus>
+                <jobId>{$ctx:jobId}</jobId>
+                <batchId>{$ctx:batchId}</batchId>
+            </salesforcebulk.getBatchStatus>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+</api>
